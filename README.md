@@ -1,1 +1,1 @@
-# SImpleBlog
+# SimpleBlog
