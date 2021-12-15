@@ -1,5 +1,7 @@
 package com.gkwc.simpleblog.service;
 
+import java.util.Optional;
+
 import com.gkwc.simpleblog.dto.LoginRequest;
 import com.gkwc.simpleblog.dto.RegisterRequest;
 import com.gkwc.simpleblog.model.User;
@@ -43,5 +45,10 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtProvider.generateToken(authentication);
+    }
+
+    public Optional<org.springframework.security.core.userdetails.User> getCurrentUser() {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Optional.of(principal);
     }
 }
