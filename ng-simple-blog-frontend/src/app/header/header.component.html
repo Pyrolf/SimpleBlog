@@ -1,13 +1,30 @@
 <div class="header">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h1><a href="" class="title">Simple Blog</a></h1>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <b><a href="" class="title navbar-brand">Simple Blog</a></b>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" *ngIf="authService.isAuthenticated()">
+                    <li class="nav-item">
+                        <a href="/add-post" class="new-post nav-link">Add Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="logout btn btn-default nav-link" (click)="logout()">Logout</button>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-auto" *ngIf="!authService.isAuthenticated()">
+                    <li class="nav-item">
+                        <a href="/login" class="login nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/register" class="register nav-link">Register</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-6">
-                <a href="" class="login btn btn-default">Login</a>
-                <a href="" class="register btn btn-default">Register</a>
-            </div>
-        </div>
+        </nav>
     </div>
 </div>

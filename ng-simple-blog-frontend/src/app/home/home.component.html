@@ -1,0 +1,15 @@
+<div class="content">
+    <div class="container">
+        <div class="posts" *ngIf="authService.isAuthenticated()">
+            <div class="card" *ngFor="let post of posts | async">
+                <div class="card-body">
+                    <h5 class="card-title">{{post.title}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">By {{post.username}}</h6>
+                    <p class="card-text text-truncate" [innerHTML]="post.content"></p>
+                    <a href="/post/{{post.id}}" class=" stretched-link"></a>
+                </div>
+            </div>
+        </div>
+        <h1 class="title text-center" *ngIf="!authService.isAuthenticated()">Welcome to Simple Blog!</h1>
+    </div>
+</div>
