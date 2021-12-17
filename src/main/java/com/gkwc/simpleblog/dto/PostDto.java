@@ -1,10 +1,10 @@
 package com.gkwc.simpleblog.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostDto {
     private Long id;
     private String content;

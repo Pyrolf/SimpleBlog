@@ -22,9 +22,9 @@ public class PostController {
     private PostService postService;
 
     @PostMapping
-    public ResponseEntity createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<String> createPost(@RequestBody PostDto postDto) {
         postService.createPost(postDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body("Post Created!");
     }
 
     @GetMapping("/all")

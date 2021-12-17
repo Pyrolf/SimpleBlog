@@ -1,8 +1,10 @@
 package com.gkwc.simpleblog.service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import com.gkwc.simpleblog.dto.LoginRequest;
+import com.gkwc.simpleblog.dto.RefreshTokenRequest;
 import com.gkwc.simpleblog.dto.RegisterRequest;
 import com.gkwc.simpleblog.model.User;
 import com.gkwc.simpleblog.repository.UserRepository;
@@ -26,6 +28,8 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtProvider jwtProvider;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
@@ -44,12 +48,28 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), 
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String authenticationToken = jwtProvider.generateToken(authentication);
-        return new AuthenticationResponse(authenticationToken, loginRequest.getUsername());
+        String token = jwtProvider.generateToken(authentication);
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(loginRequest.getUsername())
+                .build();
     }
 
     public Optional<org.springframework.security.core.userdetails.User> getCurrentUser() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Optional.of(principal);
+    }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String token = jwtProvider.generateTokenWithUsername(refreshTokenRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequest.getUsername())
+                .build();
     }
 }
