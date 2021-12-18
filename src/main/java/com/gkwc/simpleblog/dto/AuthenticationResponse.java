@@ -1,4 +1,4 @@
-package com.gkwc.simpleblog.service;
+package com.gkwc.simpleblog.dto;
 
 import java.time.Instant;
 

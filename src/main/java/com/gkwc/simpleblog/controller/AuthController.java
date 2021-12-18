@@ -2,11 +2,11 @@ package com.gkwc.simpleblog.controller;
 
 import javax.validation.Valid;
 
+import com.gkwc.simpleblog.dto.AuthenticationResponse;
 import com.gkwc.simpleblog.dto.LoginRequest;
 import com.gkwc.simpleblog.dto.RefreshTokenRequest;
 import com.gkwc.simpleblog.dto.RegisterRequest;
 import com.gkwc.simpleblog.service.AuthService;
-import com.gkwc.simpleblog.service.AuthenticationResponse;
 import com.gkwc.simpleblog.service.RefreshTokenService;
 
 import org.springframework.beans.factory.annotation.Autowired;
