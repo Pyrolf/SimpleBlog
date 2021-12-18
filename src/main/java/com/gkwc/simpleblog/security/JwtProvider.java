@@ -29,15 +29,21 @@ import static java.util.Date.from;
 @Service
 public class JwtProvider {
     private KeyStore keyStore;
-    @Value("${jtw.expiration.time}")
+    @Value("${jwt.keyStore.name}")
+    private String keyStoreName;
+    @Value("${jwt.keyStore.alias}")
+    private String keyStoreAlias;
+    @Value("${jwt.keyStore.password}")
+    private String keyStorePassword;
+    @Value("${jwt.expiration.time}")
     private Long jwtExpirationInMillis;
 
     @PostConstruct
     public void init() {
         try {
             keyStore = KeyStore.getInstance("JKS");
-            InputStream resourceAsStream = getClass().getResourceAsStream("/simpleblog.jks");
-            keyStore.load(resourceAsStream, "Passw0rd!".toCharArray());
+            InputStream resourceAsStream = getClass().getResourceAsStream(keyStoreName);
+            keyStore.load(resourceAsStream, keyStorePassword.toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
             throw new SimpleBlogException("Exception occured while loading keystore");
         }
@@ -59,7 +65,7 @@ public class JwtProvider {
 
     private PrivateKey getPrivateKey() {
         try {
-            return (PrivateKey) keyStore.getKey("simpleblog", "Passw0rd!".toCharArray());
+            return (PrivateKey) keyStore.getKey(keyStoreAlias, keyStorePassword.toCharArray());
         } catch (UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException e) {
             throw new SimpleBlogException("Exception occured while retrieving private key from keystore");
         }
@@ -72,7 +78,7 @@ public class JwtProvider {
 
     private PublicKey getPublicKey() {
         try {
-            return keyStore.getCertificate("simpleblog").getPublicKey();
+            return keyStore.getCertificate(keyStoreAlias).getPublicKey();
         } catch (KeyStoreException e) {
             throw new SimpleBlogException("Exception occured while retrieving public key from keystore");
         }
