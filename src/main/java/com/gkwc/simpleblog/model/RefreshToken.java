@@ -3,13 +3,11 @@ package com.gkwc.simpleblog.model;
 import javax.persistence.*;
 import java.time.Instant;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity
-@Data
 @AllArgsConstructor
+@Data
+@Entity
 @NoArgsConstructor
 public class RefreshToken {
     @Id

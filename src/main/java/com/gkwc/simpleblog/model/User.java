@@ -2,21 +2,17 @@ package com.gkwc.simpleblog.model;
 
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
+@Data
 @Entity
-@Getter
-@Setter
-@Table
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
     private String userName;
-    @Column
     private String password;
-    @Column
     private String email;
 }
