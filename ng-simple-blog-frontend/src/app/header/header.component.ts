@@ -9,13 +9,13 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public authService: AuthService, private router: Router) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
   logout() {
     this.authService.logout();
-    this.router.navigateByUrl('');
+    window.location.href = window.location.origin;
   }
 }

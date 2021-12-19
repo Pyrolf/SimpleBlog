@@ -16,7 +16,7 @@ export class AddPostComponent implements OnInit {
   title = new FormControl('');
   body = new FormControl('');
 
-  constructor(private addPostService: PostService, private router: Router) {
+  constructor(private addPostService: PostService) {
     this.addPostForm = new FormGroup({
       title: this.title,
       body: this.body,
@@ -36,7 +36,7 @@ export class AddPostComponent implements OnInit {
     this.postPayload.content = this.addPostForm.get('body')!.value;
     this.postPayload.title = this.addPostForm.get('title')!.value;
     this.addPostService.addPost(this.postPayload).subscribe(data => {
-      this.router.navigateByUrl('/');
+      window.location.href = window.location.origin;
     }, error => {
       console.log('Failure Response');
     })

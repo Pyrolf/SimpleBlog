@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginPayload: LoginPayload;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService) {
     this.loginForm = new FormGroup({
       username: new FormControl(),
       password: new FormControl()
@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginPayload).subscribe(data => {
       if(data) {
         console.log('login success');
-        this.router.navigateByUrl('');
+        window.location.href = window.location.origin;
+        
       } else {
         console.log('login failed');
       }

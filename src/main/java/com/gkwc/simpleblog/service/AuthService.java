@@ -7,6 +7,9 @@ import com.gkwc.simpleblog.dto.AuthenticationResponse;
 import com.gkwc.simpleblog.dto.LoginRequest;
 import com.gkwc.simpleblog.dto.RefreshTokenRequest;
 import com.gkwc.simpleblog.dto.RegisterRequest;
+import com.gkwc.simpleblog.exception.EmailTakenException;
+import com.gkwc.simpleblog.exception.SimpleBlogException;
+import com.gkwc.simpleblog.exception.UsernameTakenException;
 import com.gkwc.simpleblog.model.User;
 import com.gkwc.simpleblog.repository.UserRepository;
 import com.gkwc.simpleblog.security.JwtProvider;
@@ -33,6 +36,12 @@ public class AuthService {
     private RefreshTokenService refreshTokenService;
 
     public void signup(RegisterRequest registerRequest) {
+        if (userRepository.findByUserName(registerRequest.getUsername()).isPresent()) {
+            throw new UsernameTakenException("Username is taken");
+        }
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+            throw new EmailTakenException("Email is taken");
+        }
         User user = new User();
         user.setUserName(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
