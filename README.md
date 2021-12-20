@@ -1,5 +1,5 @@
 # SimpleBlog
-A simple blog application developed using Spring Boot and Angular 13 that allows user to create and read blog posts.
+A simple blog application created using Spring Boot and Angular 13 that allows user to create and read blog posts.
 
 ## Installation
 ### Backend - Spring Boot
