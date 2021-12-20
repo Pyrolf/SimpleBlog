@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { matchValidator } from 'src/app/form-validator';
 import { AuthService } from '../auth.service';
 import { RegisterPayload } from '../register-payload';
@@ -14,17 +14,16 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   registerPayload: RegisterPayload;
-  usernameTaken: boolean;
-  emailTaken: boolean;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private toastr: ToastrService) {
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [
         Validators.required,
         Validators.minLength(8),
-        matchValidator('confirmPassword', true)]],
+        matchValidator('confirmPassword', true)
+      ]],
       confirmPassword: ['', [
         Validators.required,
         matchValidator('password')
@@ -35,8 +34,6 @@ export class RegisterComponent implements OnInit {
       email: '',
       password: ''
     };
-    this.usernameTaken = false;
-    this.emailTaken = false;
   }
 
   ngOnInit(): void {
@@ -54,18 +51,19 @@ export class RegisterComponent implements OnInit {
           window.location.href = window.location.origin + '/register-success';
         },
         error: (e) => {
-          console.error(e.error.message)
-          if (e.error.message === 'Username taken') {
-            this.usernameTaken = true;
-            this.emailTaken = false;
-          } else if (e.error.message === 'Email taken') {
-            this.usernameTaken = false;
-            this.emailTaken = true;
+          console.error('register failed:' + e.error.message);
+          let errorMsg = '';
+          if (e.error.message === 'Username Taken') {
+            errorMsg = 'Username is taken!';
+          } else if (e.error.message === 'Email Taken') {
+            errorMsg = 'Email is taken!';
           }
+          this.toastr.clear();
+          this.toastr.error('Registration Failed! ' + errorMsg + ' Please try again.');
         }
       });
       return;
     }
-    console.log('register failed: passwords mismatch')
+    console.log('register failed: passwords mismatch');
   }
 }

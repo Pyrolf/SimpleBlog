@@ -2,30 +2,26 @@
     <form class="form-signup" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <h3 class="text-center">Please Register</h3>
         <div class="form-group">
-            <label for="inputUsername" class="sr-only">Username</label>
+            <label for="inputUsername">Username:</label>
             <input type="text" id="inputUsername" [formControlName]="'username'" class="form-control"
                 placeholder="Username" required autofocus>
-            <div *ngIf="!registerForm.get('username')!.valid && registerForm.get('username')!.touched"
-                class="help-block">* Please enter a valid username</div>
-            <div *ngIf="usernameTaken" class="help-block">* Username is taken</div>
+            <div *ngIf="!registerForm.get('username')!.valid && registerForm.get('username')!.touched" class="help-block">* Please enter a valid username</div>
         </div>
         <div class="form-group">
-            <label for="inputEmail" class="sr-only">Email</label>
+            <label for="inputEmail">Email:</label>
             <input type="text" id="inputEmail" [formControlName]="'email'" class="form-control" placeholder="Email"
                 required autofocus>
-            <div *ngIf="!registerForm.get('email')!.valid && registerForm.get('email')!.touched" class="help-block">*
-                Please enter a valid email</div>
-            <div *ngIf="emailTaken" class="help-block">* Email is taken</div>
+            <div *ngIf="!registerForm.get('email')!.valid && registerForm.get('email')!.touched" class="help-block">* Please enter a valid email</div>
         </div>
         <div class="form-group">
-            <label for="inputPassword" class="sr-only">Password</label>
+            <label for="inputPassword">Password:</label>
             <input type="password" id="inputPassword" [formControlName]="'password'" class="form-control"
                 placeholder="Password" required>
             <div *ngIf="!registerForm.get('password')!.valid && registerForm.get('password')!.touched"
-                class="help-block">* Please enter a valid password</div>
+                class="help-block">* Please enter a valid password(at least 8 characters)</div>
         </div>
         <div class="form-group">
-            <label for="inputConfirmPassword" class="sr-only">Password</label>
+            <label for="inputConfirmPassword">Confirm Password:</label>
             <input type="password" id="inputConfirmPassword" [formControlName]="'confirmPassword'" class="form-control"
                 placeholder="Confirm Password" required>
             <div *ngIf="!registerForm.get('confirmPassword')!.valid && registerForm.get('confirmPassword')!.touched"

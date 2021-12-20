@@ -8,8 +8,9 @@ import com.gkwc.simpleblog.dto.LoginRequest;
 import com.gkwc.simpleblog.dto.RefreshTokenRequest;
 import com.gkwc.simpleblog.dto.RegisterRequest;
 import com.gkwc.simpleblog.exception.EmailTakenException;
-import com.gkwc.simpleblog.exception.SimpleBlogException;
+import com.gkwc.simpleblog.exception.UsernameNotFoundException;
 import com.gkwc.simpleblog.exception.UsernameTakenException;
+import com.gkwc.simpleblog.exception.PasswordIncorrectException;
 import com.gkwc.simpleblog.model.User;
 import com.gkwc.simpleblog.repository.UserRepository;
 import com.gkwc.simpleblog.security.JwtProvider;
@@ -37,10 +38,10 @@ public class AuthService {
 
     public void signup(RegisterRequest registerRequest) {
         if (userRepository.findByUserName(registerRequest.getUsername()).isPresent()) {
-            throw new UsernameTakenException("Username is taken");
+            throw new UsernameTakenException("Username Taken");
         }
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new EmailTakenException("Email is taken");
+            throw new EmailTakenException("Email Taken");
         }
         User user = new User();
         user.setUserName(registerRequest.getUsername());
@@ -55,6 +56,12 @@ public class AuthService {
     }
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
+        Optional<User> user = userRepository.findByUserName(loginRequest.getUsername());
+        if (!user.isPresent()) {
+            throw new UsernameNotFoundException("Username Not Found");
+        } else if(user.get().getPassword().equals(loginRequest.getPassword())) {
+            throw new PasswordIncorrectException("Wrong Password");
+        }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), 
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);

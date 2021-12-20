@@ -22,6 +22,8 @@ export class AuthService {
   login(loginPayload: LoginPayload): Observable<boolean> {
     return this.httpClient.post<JwtAutResponse>(this.url + 'login', loginPayload).pipe(map(data => {
       this.localStorageService.store('authenticationToken', data.authenticationToken);
+      this.localStorageService.store('refreshToken', data.refreshToken);
+      this.localStorageService.store('expiresAt', data.expiresAt);
       this.localStorageService.store('username', data.username);
       return true;
     }));
@@ -32,7 +34,10 @@ export class AuthService {
   }
 
   logout() {
+    window.location.href = window.location.origin;
     this.localStorageService.clear('authenticationToken');
+    this.localStorageService.clear('refreshToken');
+    this.localStorageService.clear('expiresAt');
     this.localStorageService.clear('username');
   }
 }

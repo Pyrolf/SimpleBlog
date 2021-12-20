@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -16,6 +15,5 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    window.location.href = window.location.origin;
   }
 }

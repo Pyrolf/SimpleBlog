@@ -4,13 +4,17 @@
         <div class="form-group">
             <label for="inputUsername" class="sr-only">Username</label>
             <input type="text" id="inputUsername" [formControlName]="'username'" class="form-control" placeholder="Username"
-                required="" autofocus="">
+                required autofocus>
+            <div *ngIf="!loginForm.get('username')!.valid && loginForm.get('username')!.touched" class="help-block">* Please enter a valid username</div>
+            <div *ngIf="usernameNotFound" class="help-block">* Username does not exists</div>
         </div>
         <div class="form-group">
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" [formControlName]="'password'" class="form-control"
-                placeholder="Password" required="">
+                placeholder="Password" required>
+            <div *ngIf="!loginForm.get('password')!.valid && loginForm.get('password')!.touched" class="help-block">* Please enter a valid password(at least 8 characters)</div>
+            <div *ngIf="passwordIncorrect" class="help-block">* Password is incorrect</div>
         </div>
-        <button class="btn btn-primary w-100" type="submit">Sign in</button>
+        <button class="btn btn-primary w-100" type="submit">Sign in</button><div class="text-center">New user? <a routerLink="/register">Register</a></div>
     </form>
 </div>
